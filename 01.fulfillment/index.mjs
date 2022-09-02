@@ -67,7 +67,7 @@ app.post("/twiliowebhook", (req, res, next) => {
 
   console.log("message: ", req.body.Body);
   
-  twiml.message('Hello welcome to my pizza shop!');
+  twiml.message(`Hello ${req.body.Body}  welcome to my pizza shop!`);
 
   // // // todo: call dialogflow
 
