@@ -1,4 +1,4 @@
-import express from "express";
+ import express from "express";
 import morgan from "morgan";
 import { WebhookClient } from 'dialogflow-fulfillment';
 import bodyParser from "body-parser";
@@ -60,12 +60,13 @@ app.post("/webhook", (request, response) => {
 });
 
 app.post("/twiliowebhook", (req, res, next) => {
-
+  
+  let twiml = new twilio.twiml.MessagingResponse();
    console.log("twiliowebhook");
   console.log(req.body);
 
   console.log("message: ", req.body.Body);
-  let twiml = new twilio.twiml.MessagingResponse()
+  
   twiml.message('Hello welcome to my pizza shop!');
 
   // // // todo: call dialogflow
