@@ -1,0 +1,74 @@
+import express from "express";
+import morgan  from "morgan";
+import {WebhookClient} from "dialogflow-fulfillment";
+const app = express();
+app.use(express.json());
+app.use(morgan("dev"));
+
+app.get("/",(req,res) =>{
+    res.send("Hello world");
+});
+
+app.listen(3000,()=>{
+    console.log("Example app listening on port 3000!");
+    
+});
+// ab iska route ka through hum dialog flow sa  request mangwara ha
+
+// https://cloud.google.com/dialogflow/es/docs/fulfillment-webhook
+// https://cloud.google.com/dialogflow/es/docs/fulfillment-webhook#webhook-nodejs
+app.post("/webhook",(req,res)=>{
+
+    let body = req.body;
+    // console.log("body:",body);
+    const params= body.queryResult.parameters;
+    console.log("params:",params);
+    console.log("params.pizzaflavour ==>",params.pizzaFlavors);
+    console.log("params.pizzasize ==>",params.PizzaSize);
+    console.log("params.quantity ==>",params.qty);
+
+    const  {queryResult} = req.body;
+    const {intent} = queryResult;
+    const {displayName} = intent;
+    if(displayName === "Default Welcome Intent"){
+        // res.json({
+        //     fulfillmentText: "Welcome to my agent!"
+        // });
+        res.send({
+
+
+            "fulfillmentMessages": [
+              {
+                "text": {
+                  "text": [
+                    "Hello! from Welcome Intent "
+                  ]
+                }
+              }
+            ]
+          
+        })
+
+    } else  {
+        res.send({
+
+
+            "fulfillmentMessages": [
+              {
+                "text": {
+                  "text": [
+                    "Hello! from other Intent "
+                  ]
+                }
+              }
+            ]
+          
+        })
+    }  
+
+
+    
+    
+
+
+});
